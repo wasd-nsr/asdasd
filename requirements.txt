@@ -38,3 +38,4 @@ yarl==1.9.2
 pymongo
 matplotlib
 streamlit_extras
+streamlit-aggrid
