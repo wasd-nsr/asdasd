@@ -29,11 +29,11 @@ def configure_mongo():
     collection = db["files_info"]
     return collection
     
-@st.cache_data(ttl=600)
+
 def insert_new_file(collection,json_data):
     collection.insert_one(json_data)
 
-@st.cache_data(ttl=600)
+
 def query_mongo_collection(collection):
 
     item = collection.find()
