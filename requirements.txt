@@ -39,3 +39,6 @@ pymongo
 matplotlib
 streamlit_extras
 streamlit-aggrid
+tiktoken
+langchain
+llama-index
