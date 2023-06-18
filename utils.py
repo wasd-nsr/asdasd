@@ -22,7 +22,7 @@ def configure_mongo():
     MONGO_USER = os.getenv("MONGO_USER")
     MONGO_PASS = os.getenv("MONGO_PASS")
     connection_string = f"mongodb+srv://{MONGO_USER}:{MONGO_PASS}@cluster0.smd7qvr.mongodb.net/?retryWrites=true&w=majority"
-    cluster = MongoClient(connection_string, serverSelectionTimeoutMS=1000)
+    cluster = MongoClient(connection_string, serverSelectionTimeoutMS=0)
     db = cluster["kinatu"]
     collection = db["files_info"]
     return collection
