@@ -24,7 +24,7 @@ def configure_mongo():
     connection_string = f"mongodb+srv://{MONGO_USER}:{MONGO_PASS}@cluster0.smd7qvr.mongodb.net/?retryWrites=true&w=majority&wtimeoutMS=10000"
             
     #cluster = MongoClient(connection_string)
-    cluster = MongoClient(**st.secrets["mongo"])
+    cluster = MongoClient(st.secrets["mongo"])
     db = cluster["kinatu"]
     collection = db["files_info"]
     return collection
