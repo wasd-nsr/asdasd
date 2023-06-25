@@ -12,7 +12,6 @@ ut.set_navigation_menu()
 
 # Draw a title and some text to the app:
 '''
-
 This is some _markdown_.
 '''
 

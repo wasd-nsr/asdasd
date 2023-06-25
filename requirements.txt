@@ -42,3 +42,4 @@ streamlit-aggrid
 tiktoken
 langchain
 llama-index
+streamlit-authenticator
