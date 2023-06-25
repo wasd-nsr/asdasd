@@ -21,18 +21,30 @@ hide_bar= """
 """
 
 # --- USER AUTHENTICATION ---
-names = ["Peter Parker", "Rebecca Miller","bharath"]
-usernames = ["pparker", "rmiller","bharath"]
+# names = ["Peter Parker", "Rebecca Miller","bharath"]
+# usernames = ["pparker", "rmiller","bharath"]
 
 # load hashed passwords
 # file_path = Path(__file__).parent / "hashed_pw.pkl"
 # with file_path.open("rb") as file:
 #     hashed_passwords = pickle.load(file)
 
-hashed_passwords = stauth.Hasher(['abc', 'def','zxc']).generate()
+# hashed_passwords = stauth.Hasher(['abc', 'def','zxc']).generate()
 
-authenticator = stauth.Authenticate(names, usernames, hashed_passwords,
-    "SIPL_dashboard", "abcdef")
+cred = {
+    'usernames':{
+        'jsmith':{
+            'name': 'John Smith',
+            'password': 'abc'
+        },
+        'rbriggs':{
+            'name': 'Rebecca Briggs',
+            'password': 'def'
+        },
+    }
+}
+
+authenticator = stauth.Authenticate(cred)
 
 name, authentication_status, username = authenticator.login("Login", "main")
 
