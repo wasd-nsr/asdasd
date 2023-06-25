@@ -44,7 +44,13 @@ cred = {
     }
 }
 
-authenticator = stauth.Authenticate(cred)
+cookie = {
+    'expiry_days': 30,
+    'key': 'random_signature_key', # Must be string
+    'name': 'random_cookie_name',
+}
+
+authenticator = stauth.Authenticate(cred,cookie['name'],cookie['key'])
 
 name, authentication_status, username = authenticator.login("Login", "main")
 
