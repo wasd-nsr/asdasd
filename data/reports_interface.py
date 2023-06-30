@@ -41,5 +41,5 @@ def document_interface(file_path):
   return documents 
 
 if __name__ =="__main__":
-    print(document_interface("./reports/Background Check.xlsx"))
+    print(document_interface("./data/reports/Background Check.xlsx"))
 

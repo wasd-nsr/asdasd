@@ -55,6 +55,7 @@ def video_audio_interface(file_path, gladia_key = "7c5ab9ff-1d61-4969-96f7-89329
   document = [Document(transcript, extra_info=extra_info)]
   return document
   # return [d.to_langchain_format() for d in document]
+
 if __name__ == "__main__":
     print(video_audio_interface("./videos/coversation.mp4"))
 

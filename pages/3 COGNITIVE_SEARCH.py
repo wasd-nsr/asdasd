@@ -48,11 +48,36 @@ def get_text():
         "", "", placeholder="ASK A QUESTION", key="input")
     return input_text
 
+# def print_result(result):
+#   output_text = f"""### Answer: 
+#   {result['answer']}
+  
+#   ### Sources: 
+#   {result['sources']}
+  
+#   ### All relevant sources:
+#   {' '.join(list(set([doc.metadata['source'] for doc in result['source_documents']])))}
+#   """
+#   print(output_text)
+#   return output_text
+
+
+def print_result(result):
+    
+    source = "\n\nSources:\n"+result['sources'] if result['sources'] is not None else ""
+    all_sources = ' '.join(list(set([doc.metadata['source'] for doc in result['source_documents']])))
+    other_sources = "\n\nAll relevant sources:\n"+all_sources if result['source_documents'] is not None else ""
+        
+    output_text = f"""{result['answer']}{source}{other_sources}"""
+    print(output_text)
+    return output_text
 
 # Response output
 # Function for taking user prompt as input followed by producing AI generated responses
 def generate_response(prompt):
     response = query_vector(prompt) #-> {'question':,'answer':,'sources':,}
+    print(response)
+    response = print_result(response)
     return response
 
 
@@ -66,7 +91,7 @@ with response_container:
         # response = ['Hi!'] #generate_response(user_input)
         response = generate_response(user_input)
         st.session_state.past.append(user_input)
-        st.session_state.generated.append(response['answer'])
+        st.session_state.generated.append(response)
         
     if len(st.session_state['generated']):
         for i in range(len(st.session_state['generated'])-1, -1, -1):

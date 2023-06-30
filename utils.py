@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 import json 
 import streamlit as st
-
+import pandas as pd
 from bson import ObjectId
 
 class MongoEncoder(json.JSONEncoder):
@@ -40,6 +40,28 @@ def query_mongo_collection(collection):
     # Close the MongoDB connection
     return list(item)
 
+def filter_sources(col):
+    """
+        filtering sources according to user access group
+    """
+    new_file_info = query_mongo_collection(col)
+    for f in new_file_info:
+        f.pop("_id")
+        if "Vector index" in f.keys():
+            f.pop("Vector index")
+    
+    user_group = st.session_state['usergroup']
+    df = pd.DataFrame(new_file_info)
+    
+    # if admin, no need filter
+    if "admin" in user_group:
+        return df
+    
+    df = df.dropna()
+    booll = [ True if set(d) & set(user_group) else False for d in df["Group Access"] ]
+    filtered_df = df[booll]
+
+    return filtered_df
 
 def set_navigation_menu():
     st.sidebar.markdown(
