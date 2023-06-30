@@ -70,7 +70,7 @@ def print_result(result):
         all_sources = ' '.join(list(set([doc.metadata['source'] for doc in result['source_documents']])))
         other_sources = "\n\nAll relevant sources:\n"+all_sources
     else:
-        other_sources = "\n\nAll relevant sources:\n"+""    
+        other_sources = ""    
     
     output_text = f"""{result['answer']}{source}{other_sources}"""
     print(output_text)
