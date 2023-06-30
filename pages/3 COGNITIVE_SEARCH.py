@@ -65,9 +65,13 @@ def get_text():
 def print_result(result):
     
     source = "\n\nSources:\n"+result['sources'] if result['sources'] is not None else ""
-    all_sources = ' '.join(list(set([doc.metadata['source'] for doc in result['source_documents']])))
-    other_sources = "\n\nAll relevant sources:\n"+all_sources if result['source_documents'] is not None else ""
-        
+    
+    if result['source_documents'] is not None:
+        all_sources = ' '.join(list(set([doc.metadata['source'] for doc in result['source_documents']])))
+        other_sources = "\n\nAll relevant sources:\n"+all_sources
+    else:
+        other_sources = "\n\nAll relevant sources:\n"+""    
+    
     output_text = f"""{result['answer']}{source}{other_sources}"""
     print(output_text)
     return output_text
