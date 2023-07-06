@@ -9,7 +9,7 @@ from langchain.chains import RetrievalQAWithSourcesChain
 from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 
-from utils import *
+from db_utils import *
 
 from langchain.prompts.chat import (
     ChatPromptTemplate,
@@ -169,7 +169,8 @@ def query_vector2(query):
 
 def query_vector(query):
     
-    col = st.session_state['mongo_col']
+    db = st.session_state['db']
+    col = db['files_info']
 
     embedding_model = OpenAIEmbeddings()
     index = Pinecone.from_existing_index(VECTOR_INDEX,embedding_model)

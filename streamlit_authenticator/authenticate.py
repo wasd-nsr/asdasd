@@ -50,10 +50,12 @@ class Authenticate:
             st.session_state['authentication_status'] = None
         if 'username' not in st.session_state:
             st.session_state['username'] = None
-        if 'usergroup' not in st.session_state:
-            st.session_state['usergroup'] = None
         if 'logout' not in st.session_state:
             st.session_state['logout'] = None
+        
+        ###### modify
+        if 'user' not in st.session_state:
+            st.session_state['user'] = None
 
     def _token_encode(self) -> str:
         """
@@ -66,8 +68,15 @@ class Authenticate:
         """
         return jwt.encode({'name':st.session_state['name'],
             'username':st.session_state['username'],
-            'usergroup':st.session_state['usergroup'],
-            'exp_date':self.exp_date}, self.key, algorithm='HS256')
+            'exp_date':self.exp_date,
+            
+            ###### modify
+            'user':st.session_state['user']
+            },
+            self.key,
+            algorithm='HS256')
+            
+            
 
     def _token_decode(self) -> str:
         """
@@ -119,8 +128,10 @@ class Authenticate:
                         if 'name' and 'username' in self.token:
                             st.session_state['name'] = self.token['name']
                             st.session_state['username'] = self.token['username']
-                            st.session_state['usergroup'] = self.token['usergroup']
                             st.session_state['authentication_status'] = True
+                            ###### modify
+                            st.session_state['userp'] = self.token['user']
+                            
     
     def _check_credentials(self, inplace: bool=True) -> bool:
         """
@@ -141,7 +152,7 @@ class Authenticate:
                 if self._check_pw():
                     if inplace:
                         st.session_state['name'] = self.credentials['usernames'][self.username]['name']
-                        st.session_state['usergroup'] = self.credentials['usernames'][self.username]['group']
+                        st.session_state['user'] = self.credentials['usernames'][self.username]
                         self.exp_date = self._set_exp_date()
                         self.token = self._token_encode()
                         self.cookie_manager.set(self.cookie_name, self.token,
@@ -222,6 +233,8 @@ class Authenticate:
                 st.session_state['name'] = None
                 st.session_state['username'] = None
                 st.session_state['authentication_status'] = None
+                
+                st.session_state['user'] = None
         elif location == 'sidebar':
             if st.sidebar.button(button_name, key):
                 self.cookie_manager.delete(self.cookie_name)
@@ -229,6 +242,8 @@ class Authenticate:
                 st.session_state['name'] = None
                 st.session_state['username'] = None
                 st.session_state['authentication_status'] = None
+                
+                st.session_state['user'] = None
 
     def _update_password(self, username: str, password: str):
         """

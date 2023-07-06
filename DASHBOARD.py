@@ -11,9 +11,8 @@ import streamlit as st  # pip install streamlit
 from streamlit_authenticator import Authenticate,Hasher  # pip install streamlit-authenticator
 from api.vector_v2 import configure_api
 from utils import *
+from db_utils import *
 #st.set_page_config(initial_sidebar_state="collapsed")
-
-
 
 
 def dashboard():
@@ -43,11 +42,23 @@ def dashboard():
     fig  # 👈 Draw a Matplotlib chart
 
 
+def get_users():
+    db = st.session_state['db']
+    users_col = db['users']
+    item = list(users_col.find())
+    users = {}
+    for i in item: 
+        i.pop("_id")
+        users.update(i)
+    cred = {'usernames':users}
+    return cred
+
+
 
 configure_api()
 
-if 'mongo_col' not in st.session_state:
-    st.session_state['mongo_col'] = configure_mongo()
+if 'db' not in st.session_state:
+    st.session_state['db'] = configure_mongo()
 
 hide_bar= """
     <style>
@@ -66,31 +77,12 @@ hide_bar= """
     </style>
 """
 
-hashed_passwords = Hasher(['abc', 'abc123',]).generate()
-
-cred = {
-    'usernames':{
-        'ali':{
-            'name': 'Ali Lazim',
-            'password': hashed_passwords[0],
-            'group':['cs', 'qa', 'dev']
-        },
-        'admin':{
-            'name': 'ADMIN',
-            'password': hashed_passwords[1],
-            'group': ['admin', 'qa', 'cs', 'dev']
-        },
-    }
-}
-
+cred = get_users()
 cookie_obj = {
     'expiry_days': 30,
     'key': 'random_signature_key', # Must be string
     'name': 'random_cookie_name',
 }
-
-
-# st.session_state['user'] = {'name':None,'status':None,'username':None}
 
 if 'auth' not in st.session_state:
     st.session_state['auth'] = Authenticate(cred,cookie_obj)
@@ -99,12 +91,11 @@ authenticator = st.session_state['auth']
 name, authentication_status, username = authenticator.login("Login", "main")
 
 
-
 if authentication_status:
     dashboard()
     st.sidebar.title(f"Welcome {st.session_state['name']}")
     
-    groups = ", ".join(st.session_state['usergroup']) if len(st.session_state['usergroup']) > 1 else st.session_state['usergroup']
+    groups = ", ".join(st.session_state['user']['group']) if len(st.session_state['user']['group']) > 1 else st.session_state['user']['group']
     st.sidebar.text(f"group: {groups}")
     authenticator.logout("Logout", "sidebar")
     

@@ -11,6 +11,7 @@ from populate_vector import*
 # from api.vector import configure_api 
 import pinecone
 from utils import *
+from db_utils import *
 from collections import OrderedDict
 import os 
 from datetime import datetime 
@@ -45,7 +46,7 @@ def process_file(file_path, groups):
     file_info["File Size"] = str(round(filesize,2))+" KB"
     file_info["Group Access"] = groups
     file_info["Last Modify"] = modify_date
-    file_info["Added by"] = st.session_state['name']
+    file_info["Added by"] = st.session_state['user']['name']
     return file_info
 
 
@@ -82,7 +83,8 @@ def save_file(file, save_directory, groups, col):
 FIRST_LOAD = False
 
 if __name__ == "__main__":
-    col = st.session_state['mongo_col']
+    db = st.session_state['db']
+    col = db['files_info']
 
     
     tab1, tab2 = st.tabs(["Available sources", 
@@ -102,8 +104,8 @@ if __name__ == "__main__":
             success = False
             groups_access = st.multiselect(
                     '1.Choose groups that have access',
-                    st.session_state['usergroup'],
-                    st.session_state['usergroup'])
+                    st.session_state['user']['group'],
+                    st.session_state['user']['group'])
             uploaded_file = st.file_uploader("2.Upload file", type=["xlsx", "doc", "docx", "pdf", "mp4", "m4a"])
             submitted = st.form_submit_button("Add")
             if uploaded_file is not None and submitted:
