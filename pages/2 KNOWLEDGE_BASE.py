@@ -87,8 +87,9 @@ if __name__ == "__main__":
     col = db['files_info']
 
     
-    tab1, tab2 = st.tabs(["Available sources", 
-                                "Add new source"])
+    tab1, tab2, tab3 = st.tabs(["Available sources",
+                                "Add new source",
+                                "Accessibility"])
     
     
     with tab1:
@@ -107,10 +108,60 @@ if __name__ == "__main__":
                     st.session_state['user']['group'],
                     st.session_state['user']['group'])
             uploaded_file = st.file_uploader("2.Upload file", type=["xlsx", "doc", "docx", "pdf", "mp4", "m4a"])
-            submitted = st.form_submit_button("Add")
+            submitted = st.form_submit_button("➕Add")
             if uploaded_file is not None and submitted:
                 success = save_file(uploaded_file, DATA_DIR, groups_access,col)
 
             if success:
                 df_filtered = filter_sources(col)
                 table.dataframe(df_filtered, use_container_width=True)
+    
+    
+    
+    st.markdown(
+                    """
+                <style>
+                div[data-baseweb="tab-list"] button:last-child{
+                    visibility: collapse;
+                }
+                </style>
+                """,
+                    unsafe_allow_html=True,
+                )
+    
+    user_group = st.session_state['user']['group']
+    if "admin" in user_group:
+        st.markdown(
+                    """
+                <style>
+                div[data-baseweb="tab-list"] button:last-child{
+                    visibility: unset;
+                }
+                </style>
+                """,
+                    unsafe_allow_html=True,
+                )
+        with tab3:
+            df_filtered = filter_sources(col)
+            with st.form("accessibility-form", clear_on_submit=True):
+                success = False
+                
+                files = st.multiselect(
+                        '1.Choose file/files',
+                        df_filtered["File Name"],
+                        [])
+                
+                groups_access = st.multiselect(
+                    '2.Choose groups that have access',
+                    st.session_state['user']['group'],
+                    st.session_state['user']['group'])
+                
+                
+                
+                submitted = st.form_submit_button("➕Add")
+                if uploaded_file is not None and submitted:
+                    success = save_file(uploaded_file, DATA_DIR, groups_access,col)
+
+                if success:
+                    df_filtered = filter_sources(col)
+                    table.dataframe(df_filtered, use_container_width=True)

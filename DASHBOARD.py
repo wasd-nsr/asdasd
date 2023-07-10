@@ -97,7 +97,7 @@ if authentication_status:
     
     groups = ", ".join(st.session_state['user']['group']) if len(st.session_state['user']['group']) > 1 else st.session_state['user']['group']
     st.sidebar.text(f"group: {groups}")
-    authenticator.logout("Logout", "sidebar")
+    authenticator.logout("Logout🚪", "sidebar")
     
 elif authentication_status == False:
     st.error("Username/password is incorrect")

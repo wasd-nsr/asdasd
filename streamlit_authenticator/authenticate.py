@@ -235,6 +235,7 @@ class Authenticate:
                 st.session_state['authentication_status'] = None
                 
                 st.session_state['user'] = None
+                st.session_state['current_chat'] = None
         elif location == 'sidebar':
             if st.sidebar.button(button_name, key):
                 self.cookie_manager.delete(self.cookie_name)
@@ -244,6 +245,7 @@ class Authenticate:
                 st.session_state['authentication_status'] = None
                 
                 st.session_state['user'] = None
+                st.session_state['current_chat'] = None
 
     def _update_password(self, username: str, password: str):
         """
