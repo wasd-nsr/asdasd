@@ -175,7 +175,8 @@ def query_vector(query):
     embedding_model = OpenAIEmbeddings()
     index = Pinecone.from_existing_index(VECTOR_INDEX,embedding_model)
 
-    model_name = "gpt-3.5-turbo"
+    #model_name = "gpt-3.5-turbo"
+    model_name = "gpt-4"
     llm = ChatOpenAI(model_name=model_name, temperature = 0)
     chain = load_qa_chain(llm, chain_type="stuff")
 
