@@ -29,7 +29,11 @@ import time
 
 def configure_api():
     load_dotenv()
-    os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_KEY")
+    
+    # os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_KEY")
+    # os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_KEY")
+    
+    
     os.environ["SERPAPI_API_KEY"] = os.getenv("SERPAPI_KEY")
     PICONE_AI_KEY = os.getenv("PICONE_KEY")
     PICONE_ENV = os.getenv("PICON_ENV")
@@ -175,7 +179,7 @@ def query_vector(query):
     embedding_model = OpenAIEmbeddings()
     index = Pinecone.from_existing_index(VECTOR_INDEX,embedding_model)
 
-    model_name = "gpt-3.5-turbo"
+    model_name = "gpt-4"
     llm = ChatOpenAI(model_name=model_name, temperature = 0)
     chain = load_qa_chain(llm, chain_type="stuff")
 

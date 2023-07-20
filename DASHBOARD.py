@@ -23,6 +23,21 @@ def dashboard():
     '''
     This is some _markdown_.
     '''
+    
+    if 'openai_key' not in st.session_state:
+        st.session_state['openai_key'] = None
+    
+    if st.session_state['openai_key'] is not None:
+        st.text(f"API KEY ADDED!")
+    else:
+        with st.form("openai-key", clear_on_submit=True):
+            k = st.text_input('OPENAI API KEY', 'KEY HERE')
+            submitted = st.form_submit_button("➕Add")
+            
+            if submitted:
+                st.session_state['openai_key'] = k
+                os.environ["OPENAI_API_KEY"] = k
+        
 
     df = pd.DataFrame({'File name': ['Document 1', 'Document 2', 'Document 3', 'Document 4', 'Document 5', 'Document 6'],
                     'Size': ['23,455 KB', '54,450 KB', '76,455 KB', '23,455 KB', '23,654 KB', '23,455 KB'],
@@ -92,9 +107,10 @@ name, authentication_status, username = authenticator.login("Login", "main")
 
 
 if authentication_status:
-    dashboard()
-    st.sidebar.title(f"Welcome {st.session_state['name']}")
     
+    dashboard()    
+    
+    st.sidebar.title(f"Welcome {st.session_state['name']}")
     groups = ", ".join(st.session_state['user']['group']) if len(st.session_state['user']['group']) > 1 else st.session_state['user']['group']
     st.sidebar.text(f"group: {groups}")
     authenticator.logout("Logout🚪", "sidebar")
@@ -109,4 +125,14 @@ elif authentication_status == None:
 
 
 
+# https://github.com/wasd-nsr/asdasd/blob/main/data/reports/2013%20The%20UVAPADOVA%20Type%201%20Diabetes%20Simulator.pdf
 
+# https://raw.githubusercontent.com/wasd-nsr/asdasd/master/main/data/reports/2013%20The%20UVAPADOVA%20Type%201%20Diabetes%20Simulator.pdf
+
+# https://github.com/wasd-nsr/FYP_RG/blob/main/README.md
+
+# https://raw.githubusercontent.com/wasd-nsr/experiment1/main/D1NAMO%20dataset.pdf
+
+# https://github.com/wasd-nsr/experiment1/blob/main/D1NAMO%20dataset.pdf
+
+# https://raw.githubusercontent.com/wasd-nsr/asdasd/main/data/reports/2013%20The%20UVAPADOVA%20Type%201%20Diabetes%20Simulator.pdf?token=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

@@ -34,7 +34,7 @@ def get_text():
 
 def print_result(result):
     
-    source = "\n\nSources:\n"+result['sources'] if result['sources'] is not None else ""
+    source = "\n\nSources:\n"+ result['sources'] if result['sources'] is not None else ""
     
     if result['source_documents'] is not None:
         all_sources = ' '.join(list(set([doc.metadata['source'] for doc in result['source_documents']])))
@@ -227,7 +227,7 @@ if prompt := st.chat_input("ASK A QUESTION"):
             time.sleep(0.05)
             # Add a blinking cursor to simulate typing
             message_placeholder.markdown(full_response + "▌")
-        message_placeholder.markdown(full_response)
+        message_placeholder.markdown(assistant_response)
     
     
     
